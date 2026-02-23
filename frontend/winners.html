@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Daftar Pemenang - Lucky Spin Wheel</title>
+    <meta name="description" content="Daftar pemenang undian Lucky Spin Wheel">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Winners Page Specific Styles */
+        .winners-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-color: var(--accent-gold);
+        }
+
+        .winners-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .winners-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .winners-count {
+            background: var(--gradient-gold);
+            color: #000;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .winners-grid {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .winner-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all var(--transition-normal);
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .winner-card:hover {
+            transform: translateX(10px);
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .winner-rank {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .winner-rank.first {
+            background: var(--gradient-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .winner-rank.second {
+            background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%);
+        }
+
+        .winner-rank.third {
+            background: linear-gradient(135deg, #cd7f32 0%, #b5651d 100%);
+        }
+
+        .winner-info {
+            flex: 1;
+        }
+
+        .winner-nomor {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .winner-nama {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .winner-perusahaan {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .winner-time {
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .winner-time .date {
+            display: block;
+            font-weight: 500;
+        }
+
+        .winner-time .time {
+            display: block;
+            font-size: 0.8rem;
+        }
+
+        .no-winners {
+            text-align: center;
+            padding: var(--spacing-xl) * 2;
+            color: var(--text-muted);
+        }
+
+        .no-winners-icon {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.5;
+        }
+
+        .no-winners-text {
+            font-size: 1.3rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .no-winners-sub {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Animation delays for cards */
+        .winner-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .winner-card:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .winner-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .winner-card:nth-child(4) {
+            animation-delay: 0.25s;
+        }
+
+        .winner-card:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        .winner-card:nth-child(6) {
+            animation-delay: 0.35s;
+        }
+
+        .winner-card:nth-child(7) {
+            animation-delay: 0.4s;
+        }
+
+        .winner-card:nth-child(8) {
+            animation-delay: 0.45s;
+        }
+
+        .winner-card:nth-child(9) {
+            animation-delay: 0.5s;
+        }
+
+        .winner-card:nth-child(10) {
+            animation-delay: 0.55s;
+        }
+
+        @media (max-width: 768px) {
+            .winner-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .winner-time {
+                text-align: center;
+            }
+
+            .winners-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particle Background -->
+    <div id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="winners-header">
+            <a href="index.html" class="back-btn">
+                <span>←</span>
+                <span>Kembali ke Undian</span>
+            </a>
+            <div class="winners-title">
+                <span style="font-size: 2.5rem;">🏆</span>
+                <h1>Daftar Pemenang</h1>
+                <span class="winners-count" id="winnersCount">0</span>
+            </div>
+            <div style="width: 150px;"></div>
+        </header>
+
+        <!-- Winners List -->
+        <section class="winners-grid" id="winnersGrid">
+            <div class="no-winners">
+                <div class="no-winners-icon">🎰</div>
+                <p class="no-winners-text">Memuat data pemenang...</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 Lucky Spin Wheel | <a href="admin/admin.html">Admin Panel</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin + '/api';
+
+        async function loadWinners() {
+            try {
+                const response = await fetch(`${API_BASE}/winners`);
+                const result = await response.json();
+
+                if (result.success) {
+                    renderWinners(result.data);
+                    document.getElementById('winnersCount').textContent = result.total;
+                }
+            } catch (error) {
+                console.error('Error loading winners:', error);
+                document.getElementById('winnersGrid').innerHTML = `
+                    <div class="no-winners">
+                        <div class="no-winners-icon">❌</div>
+                        <p class="no-winners-text">Gagal memuat data</p>
+                        <p class="no-winners-sub">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderWinners(winners) {
+            const grid = document.getElementById('winnersGrid');
+
+            if (!winners || winners.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-winners">
+                        <div class="no-winners-icon">🎰</div>
+                        <p class="no-winners-text">Belum ada pemenang</p>
+                        <p class="no-winners-sub">Putar undian untuk menentukan pemenang</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = winners.map((winner, index) => {
+                const rankClass = index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : '';
+                const wonDate = new Date(winner.won_at);
+                const dateStr = wonDate.toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                const timeStr = wonDate.toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <div class="winner-card">
+                        <div class="winner-rank ${rankClass}">${index + 1}</div>
+                        <div class="winner-info">
+                            <div class="winner-nomor">${winner.nomor_undian}</div>
+                            <div class="winner-nama">${winner.nama_karyawan}</div>
+                            <div class="winner-perusahaan">${winner.perusahaan}</div>
+                        </div>
+                        <div class="winner-time">
+                            <span class="date">${dateStr}</span>
+                            <span class="time">${timeStr}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load winners on page load
+        document.addEventListener('DOMContentLoaded', loadWinners);
+
+        // Auto-refresh every 10 seconds
+        setInterval(loadWinners, 10000);
+    </script>
+</body>
+
+</html>

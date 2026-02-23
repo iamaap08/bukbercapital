@@ -1,0 +1,20 @@
+{
+  "name": "lucky-spin-wheel-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Lucky Spin Wheel with complex algorithm",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "sql.js": "^1.10.3",
+    "xlsx": "^0.18.5"
+  },
+  "keywords": ["lucky-spin", "wheel", "raffle"],
+  "author": "",
+  "license": "MIT"
+}

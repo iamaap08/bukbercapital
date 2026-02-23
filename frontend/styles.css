@@ -1,0 +1,732 @@
+/* ============================================
+   LUCKY SPIN WHEEL - PREMIUM STYLES
+   Redesigned: Centered 4 Boxes + Wallpaper Background
+   ============================================ */
+
+:root {
+    /* Color Palette */
+    --bg-overlay: rgba(0, 0, 0, 0.6);
+    --bg-card: rgba(20, 20, 35, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.08);
+
+    /* Accent Colors */
+    --accent-gold: #ffd700;
+    --accent-orange: #ff8c00;
+    --accent-purple: #9d4edd;
+    --accent-blue: #00d4ff;
+
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ff6b00 100%);
+    --gradient-box: linear-gradient(180deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 140, 0, 0.1) 100%);
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-muted: rgba(255, 255, 255, 0.5);
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px rgba(255, 215, 0, 0.4);
+    --shadow-box: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+/* ============================================
+   BACKGROUND WALLPAPER
+   Ganti URL dibawah untuk custom wallpaper
+   ============================================ */
+
+.background-wallpaper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* GANTI URL DIBAWAH UNTUK WALLPAPER CUSTOM */
+    background:
+        linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+    /* Contoh dengan gambar:
+    background-image: url('wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    */
+    z-index: -2;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    z-index: -1;
+}
+
+/* ============================================
+   MAIN WRAPPER - CENTERED LAYOUT
+   ============================================ */
+
+.main-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1.5rem;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+    text-align: center;
+    animation: fadeInDown 0.8s ease;
+    margin-bottom: 1rem;
+}
+
+.logo-text,
+.logo-subtitle,
+.tagline {
+    font-family: 'Outfit', sans-serif;
+    color: #ffd700;
+    /* Single Gold Color */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    /* Good contrast on photos */
+    margin: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    background: none;
+    -webkit-text-fill-color: initial;
+}
+
+.logo-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.logo-subtitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.tagline {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    letter-spacing: 2px;
+}
+
+/* ============================================
+   4 COMBINATION BOXES - MAIN SPINNING ELEMENT
+   ============================================ */
+
+.spin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: fadeIn 0.8s ease 0.3s both;
+    width: 100%;
+}
+
+/* New Container "Kotak lagi" */
+.spin-board {
+    background: rgba(20, 20, 35, 0.9);
+    /* Dark semi-transparent background */
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.combination-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.combo-box {
+    width: 100px;
+    height: 130px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 3px solid rgba(255, 215, 0, 0.4);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.combo-box:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.combo-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.combo-value {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ffffff;
+    /* White text for better visibility */
+    background: none;
+    -webkit-text-fill-color: initial;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.05s linear;
+}
+
+/* Win state override */
+.combo-box.winner .combo-value {
+    color: var(--accent-gold);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.combo-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    pointer-events: none;
+}
+
+/* Spinning Animation for Boxes */
+.combo-box.spinning .combo-value {
+    animation: slotRoll 0.08s steps(1) infinite;
+}
+
+.combo-box.spinning {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.combo-box.spinning .combo-glow {
+    opacity: 1;
+    animation: glowPulse 0.3s ease infinite;
+}
+
+/* Winner State */
+.combo-box.winner {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+    background: rgba(255, 215, 0, 0.1);
+    animation: winnerPop 0.5s ease;
+}
+
+.combo-box.winner .combo-glow {
+    opacity: 1;
+}
+
+/* Stats Mini */
+.stats-mini {
+    display: flex;
+    gap: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.stats-mini strong {
+    color: var(--accent-gold);
+    font-weight: 700;
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+
+.action-section {
+    display: flex;
+    flex-direction: row;
+    /* Side by side */
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    /* Space between buttons */
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 0.8s ease 0.4s both;
+}
+
+/* Shared button styles for equal size */
+.btn-spin,
+.btn-secondary {
+    flex: 1;
+    /* Equal width */
+    height: 60px;
+    /* Fixed height */
+    padding: 0;
+    /* Clear padding, use flex centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    white-space: nowrap;
+}
+
+.btn-spin {
+    background: var(--gradient-gold);
+    border: none;
+    color: #000;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* STOP Button State */
+.btn-spin.stop {
+    background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    animation: pulseRed 1.5s infinite;
+}
+
+.btn-spin.stop:hover {
+    box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
+}
+
+.btn-spin:hover:not(:disabled) {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+@keyframes pulseRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+    }
+}
+
+.btn-secondary {
+    background: rgba(20, 20, 35, 0.8);
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: #fff;
+    color: #fff;
+    transform: translateY(-4px);
+}
+
+.btn-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2em;
+}
+
+.btn-text {
+    /* Ensure text visibility */
+    display: inline-block;
+}
+
+
+/* ============================================
+   MODAL
+   ============================================ */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16162a 100%);
+    border-radius: 24px;
+    padding: 3rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    border: 3px solid var(--accent-gold);
+    box-shadow: var(--shadow-glow);
+    transform: scale(0.8);
+    transition: transform var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+    animation: modalPop 0.5s ease;
+}
+
+.modal-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.winner-number {
+    font-size: 5rem;
+    font-weight: 900;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    letter-spacing: 15px;
+    animation: winnerReveal 0.8s ease;
+}
+
+.winner-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.winner-company {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    padding: 0.875rem 2rem;
+    background: var(--gradient-gold);
+    border: none;
+    border-radius: 30px;
+    color: #000;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* ============================================
+   CONFETTI CANVAS
+   ============================================ */
+
+#confettiCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border-radius: 20px;
+    transition: all var(--transition-fast);
+}
+
+.footer a:hover {
+    color: var(--accent-gold);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slotRoll {
+    0% {
+        content: 'A';
+    }
+
+    10% {
+        content: '1';
+    }
+
+    20% {
+        content: 'B';
+    }
+
+    30% {
+        content: '2';
+    }
+
+    40% {
+        content: 'C';
+    }
+
+    50% {
+        content: '3';
+    }
+
+    60% {
+        content: 'D';
+    }
+
+    70% {
+        content: '4';
+    }
+
+    80% {
+        content: 'E';
+    }
+
+    90% {
+        content: '5';
+    }
+
+    100% {
+        content: 'F';
+    }
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes winnerPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes winnerReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes btnPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+@keyframes modalPop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 600px) {
+    .main-wrapper {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .logo-text {
+        font-size: 2rem;
+    }
+
+    .combination-boxes {
+        gap: 0.5rem;
+    }
+
+    .combo-box {
+        width: 70px;
+        height: 95px;
+    }
+
+    .combo-value {
+        font-size: 2.5rem;
+    }
+
+    .btn-spin {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    .winner-number {
+        font-size: 3rem;
+        letter-spacing: 8px;
+    }
+
+    .modal-content {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ============================================
+   NO DATA STATE
+   ============================================ */
+
+.no-data {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-muted);
+}
+
+.no-data a {
+    color: var(--accent-gold);
+    text-decoration: none;
+}
+
+.no-data a:hover {
+    text-decoration: underline;
+}
+
+/* Hide Company Filter for Fairness */
+.company-section {
+    display: none;
+}
