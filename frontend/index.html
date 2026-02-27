@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎰 Buka Bersama Capital Group Medan 1447 H / 2026</title>
+    <title>Buka Bersama Capital Group Medan 1447 H / 2026</title>
     <meta name="description" content="Undian Buka Bersama Capital Group Medan 1447 H / 2026">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,57 +26,85 @@
             <h1 class="logo-text">Buka Bersama</h1>
             <h2 class="logo-subtitle">Capital Group Medan</h2>
             <p class="tagline">1447 H / 2026</p>
+            <p class="tema-text">&ldquo;Harmoni Ramadhan, Menguatkan Kebersamaan<br>dalam Meraih Berkah Bersama Capital
+                Group&rdquo;</p>
         </header>
 
-        <!-- 4 Combination Boxes - MAIN SPINNING ELEMENT -->
+        <!-- 13 Digit Boxes - Nomor Handphone -->
         <section class="spin-container">
-            <!-- Inner Board Container (Kotak lagi) -->
+            <!-- Inner Board Container -->
             <div class="spin-board">
                 <div class="combination-boxes">
+                    <!-- Group 1: 4 digits (08xx) -->
                     <div class="combo-box" id="box1">
-                        <div class="combo-inner">
-                            <span class="combo-value">?</span>
-                        </div>
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
                         <div class="combo-glow"></div>
                     </div>
                     <div class="combo-box" id="box2">
-                        <div class="combo-inner">
-                            <span class="combo-value">?</span>
-                        </div>
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
                         <div class="combo-glow"></div>
                     </div>
                     <div class="combo-box" id="box3">
-                        <div class="combo-inner">
-                            <span class="combo-value">?</span>
-                        </div>
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
                         <div class="combo-glow"></div>
                     </div>
                     <div class="combo-box" id="box4">
-                        <div class="combo-inner">
-                            <span class="combo-value">?</span>
-                        </div>
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <span class="combo-separator" id="sep1">-</span>
+                    <!-- Group 2: 4 digits -->
+                    <div class="combo-box" id="box5">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box6">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box7">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box8">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <span class="combo-separator" id="sep2">-</span>
+                    <!-- Group 3: 5 digits -->
+                    <div class="combo-box" id="box9">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box10">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box11">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box12">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
+                        <div class="combo-glow"></div>
+                    </div>
+                    <div class="combo-box" id="box13">
+                        <div class="combo-inner"><span class="combo-value">?</span></div>
                         <div class="combo-glow"></div>
                     </div>
                 </div>
 
-                <!-- Stats Mini (Moved inside the board for nicer look) -->
-                <div class="stats-mini">
-                    <span><strong id="eligibleCount">0</strong> Eligible</span>
-                    <span>•</span>
-                    <span><strong id="winnerCount">0</strong> Pemenang</span>
-                </div>
+
             </div>
         </section>
 
         <!-- Action Buttons -->
         <section class="action-section">
             <button class="btn-spin" id="spinBtn">
-                <span class="btn-icon">🎲</span>
-                <span class="btn-text">PUTAR UNDIAN</span>
+                <span class="btn-text" id="spinBtnText">PUTAR UNDIAN</span>
             </button>
             <button class="btn-secondary" id="viewWinnersBtn">
-                <span class="btn-icon">🏆</span>
-                <span class="btn-text">Lihat Pemenang</span>
+                <span class="btn-text">Daftar Pemenang</span>
             </button>
         </section>
 
@@ -93,7 +122,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <a href="admin/admin.html">⚙️ Admin Panel</a>
+            <a href="admin/admin.html" class="admin-link">Admin Panel</a>
         </footer>
     </div>
 
@@ -101,17 +130,15 @@
     <div class="modal" id="winnerModal">
         <div class="modal-content">
             <div class="confetti-burst" id="confettiBurst"></div>
-            <div class="modal-header">
-                <h2>🎉 SELAMAT! 🎉</h2>
-            </div>
             <div class="modal-body">
-                <div class="winner-number" id="modalWinnerNumber">A1B2</div>
-                <div class="winner-name" id="modalWinnerName">Nama Pemenang</div>
-                <div class="winner-company" id="modalWinnerCompany">PT. Perusahaan</div>
+                <div class="winner-text" id="modalWinnerText"
+                    style="font-size: 1.5rem; line-height: 1.8; color: var(--text-primary); font-weight: 400;">
+                    <!-- Template injected by JS -->
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-primary" id="closeModalBtn">Tutup</button>
-                <button class="btn-secondary" id="goToWinnersBtn">Lihat Semua Pemenang</button>
+                <button class="btn-secondary" id="goToWinnersBtn">Daftar Pemenang</button>
             </div>
         </div>
     </div>

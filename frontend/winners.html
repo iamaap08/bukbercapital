@@ -4,281 +4,434 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏆 Daftar Pemenang - Lucky Spin Wheel</title>
-    <meta name="description" content="Daftar pemenang undian Lucky Spin Wheel">
+    <title>Daftar Pemenang — Capital Group Medan</title>
+    <meta name="description" content="Daftar pemenang undian Buka Bersama Capital Group Medan 1447 H / 2026">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.min.js"></script>
     <style>
-        /* Winners Page Specific Styles */
-        .winners-header {
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0c0c14;
+            --bg-surface: #13131f;
+            --bg-elevated: #1a1a2a;
+            --bg-hover: #22223a;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --gold-primary: #c9a84c;
+            --gold-light: #e4c76b;
+            --gold-muted: rgba(201, 168, 76, 0.15);
+            --text-primary: #f0ede6;
+            --text-secondary: rgba(240, 237, 230, 0.7);
+            --text-muted: rgba(240, 237, 230, 0.4);
+            --radius: 8px;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Layout ── */
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 3rem 2rem 4rem;
+        }
+
+        /* ── Top Bar ── */
+        .topbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: var(--spacing-xl);
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
+            margin-bottom: 3rem;
         }
 
-        .back-btn {
-            display: flex;
+        .back-link {
+            display: inline-flex;
             align-items: center;
-            gap: var(--spacing-xs);
-            padding: var(--spacing-sm) var(--spacing-md);
-            background: var(--bg-glass);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: var(--radius-md);
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            text-decoration: none;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            border-color: var(--accent-gold);
-        }
-
-        .winners-title {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .winners-title h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .winners-count {
-            background: var(--gradient-gold);
-            color: #000;
-            padding: 0.3rem 0.8rem;
-            border-radius: var(--radius-xl);
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .winners-grid {
-            display: grid;
-            gap: var(--spacing-md);
-        }
-
-        .winner-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-lg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all var(--transition-normal);
-            animation: fadeIn 0.5s ease both;
-        }
-
-        .winner-card:hover {
-            transform: translateX(10px);
-            border-color: rgba(255, 215, 0, 0.3);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .winner-rank {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #000;
-            flex-shrink: 0;
-        }
-
-        .winner-rank.first {
-            background: var(--gradient-gold);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .winner-rank.second {
-            background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%);
-        }
-
-        .winner-rank.third {
-            background: linear-gradient(135deg, #cd7f32 0%, #b5651d 100%);
-        }
-
-        .winner-info {
-            flex: 1;
-        }
-
-        .winner-nomor {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: var(--gradient-gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .winner-nama {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .winner-perusahaan {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        .winner-time {
-            text-align: right;
+            gap: 0.4rem;
             color: var(--text-muted);
+            text-decoration: none;
             font-size: 0.85rem;
-        }
-
-        .winner-time .date {
-            display: block;
             font-weight: 500;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
         }
 
-        .winner-time .time {
-            display: block;
+        .back-link:hover {
+            color: var(--gold-primary);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .page-header .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* ── Export Button ── */
+        .btn-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-export:hover {
+            background: var(--gold-muted);
+            color: var(--gold-light);
+        }
+
+        .btn-export:active {
+            transform: scale(0.97);
+        }
+
+        .btn-export svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+
+        /* ── Table ── */
+        .table-wrapper {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-elevated);
+        }
+
+        thead th {
+            padding: 0.85rem 1.25rem;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        thead th:first-child {
+            text-align: center;
+            width: 56px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        tbody td {
+            padding: 0.9rem 1.25rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+
+        tbody td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-muted);
             font-size: 0.8rem;
         }
 
-        .no-winners {
+        .cell-name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .cell-phone {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.04em;
+            color: var(--gold-primary);
+            font-weight: 500;
+        }
+
+        .cell-prize {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            padding: 4rem 2rem;
             text-align: center;
-            padding: var(--spacing-xl) * 2;
+        }
+
+        .empty-state .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .no-winners-icon {
-            font-size: 5rem;
-            margin-bottom: var(--spacing-lg);
-            opacity: 0.5;
+        /* ── Footer ── */
+        .page-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .no-winners-text {
-            font-size: 1.3rem;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .no-winners-sub {
-            font-size: 1rem;
+        .page-footer span {
+            font-size: 0.75rem;
             color: var(--text-muted);
         }
 
-        /* Animation delays for cards */
-        .winner-card:nth-child(1) {
-            animation-delay: 0.1s;
+        .page-footer a {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
 
-        .winner-card:nth-child(2) {
-            animation-delay: 0.15s;
+        .page-footer a:hover {
+            color: var(--gold-primary);
         }
 
-        .winner-card:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .winner-card:nth-child(4) {
-            animation-delay: 0.25s;
-        }
-
-        .winner-card:nth-child(5) {
-            animation-delay: 0.3s;
-        }
-
-        .winner-card:nth-child(6) {
-            animation-delay: 0.35s;
-        }
-
-        .winner-card:nth-child(7) {
-            animation-delay: 0.4s;
-        }
-
-        .winner-card:nth-child(8) {
-            animation-delay: 0.45s;
-        }
-
-        .winner-card:nth-child(9) {
-            animation-delay: 0.5s;
-        }
-
-        .winner-card:nth-child(10) {
-            animation-delay: 0.55s;
-        }
-
-        @media (max-width: 768px) {
-            .winner-card {
-                flex-direction: column;
-                text-align: center;
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .page {
+                padding: 1.5rem 1rem 3rem;
             }
 
-            .winner-time {
-                text-align: center;
+            .topbar {
+                margin-bottom: 2rem;
             }
 
-            .winners-header {
+            .page-header h1 {
+                font-size: 1.35rem;
+            }
+
+            .summary-bar {
                 flex-direction: column;
-                text-align: center;
+            }
+
+            .table-wrapper {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                margin-left: -1rem;
+                margin-right: -1rem;
+            }
+
+            thead th,
+            tbody td {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .header-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* ── Print ── */
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+
+            .topbar,
+            .btn-export,
+            .page-footer {
+                display: none;
+            }
+
+            .table-wrapper {
+                border: 1px solid #ddd;
+            }
+
+            thead {
+                background: #f5f5f5;
+            }
+
+            thead th {
+                color: #333;
+                border-bottom: 2px solid #ddd;
+            }
+
+            tbody td {
+                color: #333;
+            }
+
+            .cell-phone {
+                color: #333;
+            }
+
+            .summary-item {
+                background: #f9f9f9;
+            }
+
+            .summary-value {
+                color: #333;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Particle Background -->
-    <div id="particles"></div>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Header -->
-        <header class="winners-header">
-            <a href="index.html" class="back-btn">
-                <span>←</span>
-                <span>Kembali ke Undian</span>
+    <div class="page">
+        <!-- Top Bar -->
+        <nav class="topbar">
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+                Kembali
             </a>
-            <div class="winners-title">
-                <span style="font-size: 2.5rem;">🏆</span>
-                <h1>Daftar Pemenang</h1>
-                <span class="winners-count" id="winnersCount">0</span>
+        </nav>
+
+        <!-- Header -->
+        <header class="page-header">
+            <div class="header-row">
+                <div>
+                    <h1>Daftar Pemenang</h1>
+                    <p class="subtitle">Undian Buka Bersama Capital Group Medan — 1447 H / 2026</p>
+                </div>
+                <button class="btn-export" id="exportPdfBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="12" y1="18" x2="12" y2="12" />
+                        <polyline points="9 15 12 18 15 15" />
+                    </svg>
+                    Export PDF
+                </button>
             </div>
-            <div style="width: 150px;"></div>
         </header>
 
-        <!-- Winners List -->
-        <section class="winners-grid" id="winnersGrid">
-            <div class="no-winners">
-                <div class="no-winners-icon">🎰</div>
-                <p class="no-winners-text">Memuat data pemenang...</p>
-            </div>
-        </section>
+
+        <!-- Table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Perusahaan</th>
+                        <th>Nomor HP</th>
+                        <th>Hadiah</th>
+                    </tr>
+                </thead>
+                <tbody id="winnersBody">
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="icon">⏳</div>
+                                <h3>Memuat data…</h3>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Footer -->
-        <footer class="footer">
-            <p>© 2026 Lucky Spin Wheel | <a href="admin/admin.html">Admin Panel</a></p>
+        <footer class="page-footer">
+            <span>© 2026 Capital Group Medan</span>
+            <a href="admin/admin.html">Admin Panel</a>
         </footer>
     </div>
 
     <script>
         const API_BASE = window.location.origin + '/api';
+        let winnersData = [];
 
         async function loadWinners() {
             try {
@@ -286,70 +439,145 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    renderWinners(result.data);
-                    document.getElementById('winnersCount').textContent = result.total;
+                    winnersData = result.data || [];
+                    renderWinners(winnersData);
                 }
             } catch (error) {
                 console.error('Error loading winners:', error);
-                document.getElementById('winnersGrid').innerHTML = `
-                    <div class="no-winners">
-                        <div class="no-winners-icon">❌</div>
-                        <p class="no-winners-text">Gagal memuat data</p>
-                        <p class="no-winners-sub">${error.message}</p>
-                    </div>
-                `;
+                document.getElementById('winnersBody').innerHTML = `
+                    <tr><td colspan="5">
+                        <div class="empty-state">
+                            <div class="icon">⚠️</div>
+                            <h3>Gagal memuat data</h3>
+                            <p>${error.message}</p>
+                        </div>
+                    </td></tr>`;
             }
         }
 
         function renderWinners(winners) {
-            const grid = document.getElementById('winnersGrid');
+            const tbody = document.getElementById('winnersBody');
 
             if (!winners || winners.length === 0) {
-                grid.innerHTML = `
-                    <div class="no-winners">
-                        <div class="no-winners-icon">🎰</div>
-                        <p class="no-winners-text">Belum ada pemenang</p>
-                        <p class="no-winners-sub">Putar undian untuk menentukan pemenang</p>
-                    </div>
-                `;
+                tbody.innerHTML = `
+                    <tr><td colspan="5">
+                        <div class="empty-state">
+                            <div class="icon">🏆</div>
+                            <h3>Belum ada pemenang</h3>
+                            <p>Pemenang akan muncul setelah undian dilakukan</p>
+                        </div>
+                    </td></tr>`;
                 return;
             }
 
-            grid.innerHTML = winners.map((winner, index) => {
-                const rankClass = index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : '';
-                const wonDate = new Date(winner.won_at);
-                const dateStr = wonDate.toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                const timeStr = wonDate.toLocaleTimeString('id-ID', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                return `
-                    <div class="winner-card">
-                        <div class="winner-rank ${rankClass}">${index + 1}</div>
-                        <div class="winner-info">
-                            <div class="winner-nomor">${winner.nomor_undian}</div>
-                            <div class="winner-nama">${winner.nama_karyawan}</div>
-                            <div class="winner-perusahaan">${winner.perusahaan}</div>
-                        </div>
-                        <div class="winner-time">
-                            <span class="date">${dateStr}</span>
-                            <span class="time">${timeStr}</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            tbody.innerHTML = winners.map((w, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td class="cell-name">${w.nama_karyawan}</td>
+                    <td class="cell-company">${w.perusahaan}</td>
+                    <td class="cell-phone">${formatPhone(w.nomor_undian)}</td>
+                    <td class="cell-prize">${w.prize_name || '-'}</td>
+                </tr>
+            `).join('');
         }
 
-        // Load winners on page load
-        document.addEventListener('DOMContentLoaded', loadWinners);
 
-        // Auto-refresh every 10 seconds
-        setInterval(loadWinners, 10000);
+        function formatPhone(number) {
+            if (!number) return '';
+            const clean = number.replace(/\D/g, '');
+            if (clean.length <= 4) return clean;
+            if (clean.length <= 8) return clean.slice(0, 4) + '-' + clean.slice(4);
+            return clean.slice(0, 4) + '-' + clean.slice(4, 8) + '-' + clean.slice(8);
+        }
+
+        // ── PDF Export ──
+        function exportPDF() {
+            if (winnersData.length === 0) {
+                alert('Belum ada data pemenang untuk diekspor.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+
+            // Header
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Daftar Pemenang Undian', 105, 20, { align: 'center' });
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(100);
+            doc.text('Buka Bersama Capital Group Medan — 1447 H / 2026', 105, 27, { align: 'center' });
+
+            const now = new Date();
+            doc.setFontSize(8);
+            doc.text(`Dicetak: ${now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} ${now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`, 105, 33, { align: 'center' });
+
+            doc.setTextColor(0);
+
+            // Table — semua huruf kapital
+            const tableData = winnersData.map((w, i) => [
+                i + 1,
+                (w.nama_karyawan || '').toUpperCase(),
+                (w.perusahaan || '').toUpperCase(),
+                formatPhone(w.nomor_undian).toUpperCase(),
+                (w.prize_name || '-').toUpperCase()
+            ]);
+
+            doc.autoTable({
+                head: [['NO', 'NAMA', 'PERUSAHAAN', 'NOMOR HP', 'HADIAH']],
+                body: tableData,
+                startY: 38,
+                theme: 'grid',
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 9,
+                    cellPadding: 4,
+                    halign: 'center',
+                    valign: 'middle',
+                    lineColor: [220, 220, 220],
+                    lineWidth: 0.3
+                },
+                headStyles: {
+                    fillColor: [30, 30, 45],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold',
+                    fontSize: 8,
+                    halign: 'center'
+                },
+                alternateRowStyles: {
+                    fillColor: [248, 248, 250]
+                },
+                columnStyles: {
+                    0: { halign: 'center', cellWidth: 12 },
+                    1: { halign: 'center', cellWidth: 42 },
+                    2: { halign: 'center', cellWidth: 38 },
+                    3: { halign: 'center', cellWidth: 32 },
+                    4: { halign: 'center', cellWidth: 'auto' }
+                },
+                didDrawPage: function (data) {
+                    doc.setFontSize(7);
+                    doc.setTextColor(150);
+                    doc.text(
+                        `Halaman ${doc.internal.getCurrentPageInfo().pageNumber}`,
+                        105, doc.internal.pageSize.height - 10,
+                        { align: 'center' }
+                    );
+                }
+            });
+
+            doc.save('Daftar_Pemenang_BukBer_CapitalGroup_2026.pdf');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadWinners();
+            document.getElementById('exportPdfBtn').addEventListener('click', exportPDF);
+        });
+
+        // Auto-refresh every 15 seconds
+        setInterval(loadWinners, 15000);
     </script>
 </body>
 

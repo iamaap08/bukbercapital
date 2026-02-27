@@ -8,6 +8,7 @@ const fs = require('fs');
 const { initializeDatabase, employeeOps, winnerOps, companyOps, settingsOps } = require('./database');
 const spinAlgorithm = require('./spinAlgorithm');
 const excelImporter = require('./excelImporter');
+const prizeImporter = require('./prizeImporter');
 
 // Initialize Express app
 const app = express();
@@ -195,6 +196,59 @@ app.post('/api/employees/import', upload.single('file'), async (req, res) => {
     }
 });
 
+// Import prizes
+app.post('/api/settings/prizes/import', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                error: 'Tidak ada file yang diupload'
+            });
+        }
+
+        const parseResult = prizeImporter.parseExcel(req.file.path);
+        if (!parseResult.success) {
+            fs.unlinkSync(req.file.path);
+            return res.status(400).json(parseResult);
+        }
+
+        const columns = prizeImporter.detectColumns(parseResult.headers);
+        if (!columns.complete) {
+            fs.unlinkSync(req.file.path);
+            return res.status(400).json({
+                success: false,
+                error: 'Kolom "Hadiah" wajib ada di file Excel.'
+            });
+        }
+
+        const dataResult = prizeImporter.transformData(parseResult.rows, columns.mapping);
+        if (!dataResult.success) {
+            fs.unlinkSync(req.file.path);
+            return res.status(400).json(dataResult);
+        }
+
+        // Save imported prizes
+        settingsOps.set('prizes', dataResult.prizes);
+
+        // Clean up uploaded file
+        fs.unlinkSync(req.file.path);
+
+        res.json({
+            success: true,
+            message: `Berhasil mengimpor ${dataResult.prizes.length} daftar hadiah!`,
+            prizesCount: dataResult.prizes.length
+        });
+    } catch (error) {
+        if (req.file && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
 // Delete employee
 app.delete('/api/employees/:id', (req, res) => {
     try {
@@ -247,7 +301,16 @@ app.post('/api/spin', (req, res) => {
             companies = req.body.companies.filter(c => c && c.trim());
         }
 
-        const prizeName = req.body.prizeName || null;
+        let prizeName = req.body.prizeName || null;
+
+        // Get sequential prize from settings based on current winner count
+        const prizes = settingsOps.get('prizes') || [];
+        if (prizes.length > 0) {
+            const currentWinnerCount = winnerOps.getCount().count;
+            if (currentWinnerCount < prizes.length) {
+                prizeName = prizes[currentWinnerCount];
+            }
+        }
 
         // Get eligible participants
         const eligible = employeeOps.getEligible(companies);
@@ -283,6 +346,7 @@ app.post('/api/spin', (req, res) => {
             winner: spinResult.winner,
             animationSequence: animationSequence,
             spinHash: spinResult.spinHash,
+            prizeName: prizeName,
             metadata: spinResult.metadata
         });
     } catch (error) {
@@ -433,6 +497,25 @@ app.post('/api/settings/companies', (req, res) => {
         const companies = req.body.companies || [];
         settingsOps.set('allowed_companies', companies);
         res.json({ success: true, message: 'Settings saved' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.get('/api/settings/prizes', (req, res) => {
+    try {
+        const prizes = settingsOps.get('prizes');
+        res.json({ success: true, data: prizes || [] });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/settings/prizes', (req, res) => {
+    try {
+        const prizes = req.body.prizes || [];
+        settingsOps.set('prizes', prizes);
+        res.json({ success: true, message: 'Prize settings saved' });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }

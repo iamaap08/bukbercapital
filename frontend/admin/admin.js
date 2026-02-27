@@ -69,7 +69,17 @@ const elements = {
     modalTitle: document.getElementById('modalTitle'),
     modalMessage: document.getElementById('modalMessage'),
     modalCancelBtn: document.getElementById('modalCancelBtn'),
-    modalConfirmBtn: document.getElementById('modalConfirmBtn')
+    modalConfirmBtn: document.getElementById('modalConfirmBtn'),
+
+    // Prizes Tab
+    prizeUploadArea: document.getElementById('prizeUploadArea'),
+    prizeFileInput: document.getElementById('prizeFileInput'),
+    prizeImportResult: document.getElementById('prizeImportResult'),
+    prizeResultIcon: document.getElementById('prizeResultIcon'),
+    prizeResultTitle: document.getElementById('prizeResultTitle'),
+    prizeResultMessage: document.getElementById('prizeResultMessage'),
+    prizesTableBody: document.getElementById('prizesTableBody'),
+    prizesCount: document.getElementById('prizesCount')
 };
 
 // ============================================
@@ -264,6 +274,9 @@ function switchTab(tabName) {
     if (tabName === 'filter') {
         loadFilterSettings();
     }
+    if (tabName === 'prizes') {
+        loadPrizes();
+    }
 }
 
 async function loadFilterSettings() {
@@ -306,6 +319,80 @@ async function saveFilterSettings() {
         alert('Pengaturan filter berhasil disimpan! Halaman undian akan menggunakan filter ini.');
     } else {
         alert('Gagal menyimpan: ' + result.error);
+    }
+}
+
+// ============================================
+// PRIZES EXCEL IMPORT FUNCTIONS
+// ============================================
+
+async function loadPrizes() {
+    const result = await fetchAPI('/settings/prizes');
+    if (result.success && result.data) {
+        renderPrizesTable(result.data);
+    }
+}
+
+function renderPrizesTable(prizes) {
+    if (!prizes || prizes.length === 0) {
+        elements.prizesTableBody.innerHTML = `
+            <tr>
+                <td colspan="2" style="text-align: center; color: var(--text-muted);">Belum ada data hadiah</td>
+            </tr>
+        `;
+        elements.prizesCount.textContent = '0';
+        return;
+    }
+
+    elements.prizesTableBody.innerHTML = prizes.map((prize, idx) => `
+        <tr>
+            <td style="text-align: center; font-variant-numeric: tabular-nums;">${idx + 1}</td>
+            <td style="font-weight: 500;">${prize}</td>
+        </tr>
+    `).join('');
+
+    elements.prizesCount.textContent = prizes.length;
+}
+
+async function handlePrizeUpload(file) {
+    if (!file) return;
+
+    elements.prizeUploadArea.classList.add('loading');
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch(`${API_BASE}/settings/prizes/import`, {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        elements.prizeUploadArea.classList.remove('loading');
+
+        elements.prizeImportResult.classList.remove('hidden');
+        if (result.success) {
+            elements.prizeResultIcon.textContent = '✅';
+            elements.prizeResultTitle.textContent = 'Import Berhasil!';
+            elements.prizeResultMessage.textContent = result.message;
+            loadPrizes();
+        } else {
+            elements.prizeResultIcon.textContent = '❌';
+            elements.prizeResultTitle.textContent = 'Import Gagal';
+            elements.prizeResultMessage.textContent = result.error;
+        }
+
+        setTimeout(() => {
+            elements.prizeImportResult.classList.add('hidden');
+        }, 5000);
+
+    } catch (error) {
+        elements.prizeUploadArea.classList.remove('loading');
+        elements.prizeImportResult.classList.remove('hidden');
+        elements.prizeResultIcon.textContent = '❌';
+        elements.prizeResultTitle.textContent = 'Error';
+        elements.prizeResultMessage.textContent = error.message;
     }
 }
 
@@ -542,6 +629,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         elements.filterDeselectAllBtn.addEventListener('click', () => {
             elements.companyFilterList.querySelectorAll('input').forEach(cb => cb.checked = false);
+        });
+    }
+
+    // Prizes Tab Actions
+    if (elements.prizeUploadArea) {
+        elements.prizeUploadArea.addEventListener('click', () => {
+            elements.prizeFileInput.click();
+        });
+
+        elements.prizeFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handlePrizeUpload(file);
+        });
+
+        elements.prizeUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            elements.prizeUploadArea.classList.add('dragover');
+        });
+
+        elements.prizeUploadArea.addEventListener('dragleave', () => {
+            elements.prizeUploadArea.classList.remove('dragover');
+        });
+
+        elements.prizeUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            elements.prizeUploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith('.xlsx') || file.name.endsWith('.xls'))) {
+                handlePrizeUpload(file);
+            } else {
+                alert('Hanya file Excel (.xlsx, .xls) yang diizinkan');
+            }
         });
     }
 

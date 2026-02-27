@@ -228,7 +228,7 @@ const winnerOps = {
             SELECT w.*, e.nama_karyawan, e.nomor_undian, e.perusahaan
             FROM winners w
             JOIN employees e ON w.employee_id = e.id
-            ORDER BY w.won_at DESC
+            ORDER BY w.won_at ASC
         `);
         return resultToArray(result);
     },
